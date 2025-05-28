@@ -21,7 +21,6 @@ def main():
         classify_document(doc)
         extract_metadata(doc)
         save_json(doc, OUTPUT_FOLDER)
-        print(f"{doc.filename} → Predicted: {doc.predicted_label}")
 
     evaluate_predictions(docs)
 

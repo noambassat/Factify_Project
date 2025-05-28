@@ -1,5 +1,5 @@
 {
-  "id": "20af0da8-590b-499c-b007-2d36248f362a",
+  "id": "4289cb16-d7b0-4872-aed0-66bea0163773",
   "filename": "invoice1 (1).pdf",
   "raw_text": "Invoice\nInvoice Number\n123\nIssue Date\nMarch 25, 2024\nDue Date\nMarch 25, 2024\nStatus\nPAID\nExample, LLC\n123 Fake Street\nNew York City, NY 10012\n(555) 867-5309\nsupport@example.com\nBill To\nCustomer\nAddress\nCity, State Zipcode\ncustomer@example.org\nItem\nUnit Cost\nQuantity\nAmount\nSubscription\n$19.00\n1\n$19.00\nSubtotal\n$19.00\nTax Rate\n0%\nAmount Due\n$19.00\nFor questions, contact us anytime at support@example.com.",
   "chunks": [],
@@ -19,6 +19,6 @@
   "true_label": "Invoice",
   "predicted_label": "Invoice",
   "label_confidence": {
-    "Invoice": 0.968
+    "Invoice": 0.995
   }
 }
