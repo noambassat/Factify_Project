@@ -22,7 +22,6 @@ It processes business documents (invoices, contracts, and earnings reports), cla
 
      For Mac/Linux:
      export OPENAI_API_KEY=your_key_here
-
 3. Place your input PDF documents in:
 
    data/input_pdfs/
