@@ -12,18 +12,17 @@ It processes business documents (invoices, contracts, and earnings reports), cla
    pip install -r requirements.txt
 
 2. Set your OpenAI API key  
-You can either:
-
-Create a .env file with:
-OPENAI_API_KEY=your_key_here
-
-Or set it as an environment variable:
-
-Windows CMD:
-set OPENAI_API_KEY=your_key_here
-
-Mac / Linux / WSL:
-export OPENAI_API_KEY=your_key_here
+   You can either:
+   Create a .env file with:
+   OPENAI_API_KEY=your_key_here
+   
+   Or set it as an environment variable:
+   
+   Windows CMD:
+   set OPENAI_API_KEY=your_key_here
+   
+   Mac / Linux / WSL:
+   export OPENAI_API_KEY=your_key_here
 
 3. Place your input PDF documents in:
 
