@@ -1,0 +1,33 @@
+{
+  "id": "45ce181c-c2f2-4c73-a25c-21298c60a7cd",
+  "filename": "Earnings (1).PDF",
+  "raw_text": "Q1 2025 Earnings \nApril 24, 2025\nNote About Forward-Looking Statements and \nNon-GAAP Financial Measures\nQ1 2025 Earnings\nThis presentation may contain forward-looking statements regarding our business, operations, and \nfinancial performance. Such statements are based on current expectations and assumptions that are \nsubject to a number of risks and uncertainties. Actual results could differ materially. Please refer to our \nForms 10-K and 10-Q, including the risk factors. We undertake no obligation to update any forward-looking \nstatement, except as required by law. Given these risk and uncertainties, investors are cautioned not to \nplace undue reliance on such forward-looking statements.\nWe present both GAAP and non-GAAP financial measures in this presentation. A reconciliation of \nnon-GAAP to GAAP measures is included in this presentation and in the most recent earnings press \nrelease, which is distributed and available to the public through our Investor Relations website located at \nabc.xyz/investor.\nAlphabet Income Statement\nin Millions, except Percentages and EPS; unaudited\nQ1'24\nQ1'25\nRevenues\nCosts and Expenses:\nCost of Revenues\nResearch and Development\nSales and Marketing\nGeneral and Administrative\nTotal Costs and Expenses\nIncome from operations\nOther income (expense), net\nIncome before income taxes\nProvision for income taxes\nNet income\nDiluted EPS\n$80,539\n33,712\n11,903\n6,426\n3,026\n55,067\n25,472\n2,843\n28,315\n4,653\n$23,662\n$1.89\n$90,234\n36,361\n13,556\n6,172\n3,539\n59,628\n30,606\n11,183\n41,789\n7,249\n$34,540\n$2.81\nY/Y\n12%\n8%\n14%\n-4%\n17%\n8%\n20%\n293%\n48%\n56%\n46%\n49%\nQ1 2025 Earnings",
+  "chunks": [],
+  "metadata": {
+    "num_pages": 3,
+    "num_words": 235,
+    "reporting_period": "Q1 2025",
+    "key_metrics": {
+      "Revenues": 90234,
+      "Cost of Revenues": 36361,
+      "Research and Development": 13556,
+      "Sales and Marketing": 6172,
+      "General and Administrative": 3539,
+      "Total Costs and Expenses": 59628,
+      "Income from operations": 30606,
+      "Other income (expense), net": 11183,
+      "Income before income taxes": 41789,
+      "Provision for income taxes": 7249,
+      "Net income": 34540,
+      "Diluted EPS": 2.81,
+      "Y/Y Revenue Growth": "12%",
+      "Y/Y Net Income Growth": "46%"
+    },
+    "executive_summary": null
+  },
+  "true_label": "Earnings",
+  "predicted_label": "Earnings",
+  "label_confidence": {
+    "Earnings": 0.971
+  }
+}
