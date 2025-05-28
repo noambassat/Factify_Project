@@ -15,24 +15,14 @@ It processes business documents (invoices, contracts, and earnings reports), cla
 You can either:
 
 Create a .env file with:
-
-ini
-Copy
-Edit
 OPENAI_API_KEY=your_key_here
+
 Or set it as an environment variable:
 
 Windows CMD:
-
-arduino
-Copy
-Edit
 set OPENAI_API_KEY=your_key_here
-Mac / Linux / WSL:
 
-arduino
-Copy
-Edit
+Mac / Linux / WSL:
 export OPENAI_API_KEY=your_key_here
 
 3. Place your input PDF documents in:
