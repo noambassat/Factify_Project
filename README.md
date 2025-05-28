@@ -13,17 +13,15 @@ It processes business documents (invoices, contracts, and earnings reports), cla
 
 2. Set your OpenAI API key  
    You can either:
-   Create a .env file with:
-   OPENAI_API_KEY=your_key_here
-   
-   Or set it as an environment variable:
-   
-   Windows CMD:
-   set OPENAI_API_KEY=your_key_here
-   
-   Mac / Linux / WSL:
-   export OPENAI_API_KEY=your_key_here
+   - Add a .env file with the line:
+     OPENAI_API_KEY=your_key_here
+   - Or set an environment variable:
 
+     For Windows CMD:
+     set OPENAI_API_KEY=your_key_here
+
+     For Mac/Linux:
+     export OPENAI_API_KEY=your_key_here
 3. Place your input PDF documents in:
 
    data/input_pdfs/
