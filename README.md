@@ -194,13 +194,13 @@ requirements.txt            # Python dependencies
 
 ### 2. AI-Powered Feature Suggestions
 
-#### Feature 1 — Smart Due-Date Reminders
+#### Feature 1 - Smart Due-Date Reminders
 
 - Leverage `due_date`, `termination_date`, and `reporting_period`
 - Return actionable reminders and alerts
 - Adds business value by reducing missed deadlines
 
-#### Feature 2 — Auto-Enrichment Suggestions
+#### Feature 2 - Auto-Enrichment Suggestions
 
 - Suggest missing fields (e.g. missing totals or terms)
 - Use LLMs to infer or recommend what may be added to make the doc more complete
