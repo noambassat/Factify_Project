@@ -178,7 +178,7 @@ requirements.txt            # Python dependencies
     - Classification: Confusion matrix and F1-score measured for the 3-label classifier.
     - Metadata Extraction: Missing fields are automatically logged per document, based on its type-specific schema.
 
-Note: For consistency, all metadata fields are included in the JSON output, even if they are irrelevant for a given document type.
+        Note: For consistency, all metadata fields are included in the JSON output, even if they are irrelevant for a given document type.
 ---
 
 ## Part 2: AI-Ready API
