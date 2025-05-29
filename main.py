@@ -4,6 +4,7 @@ from utils.pdf_loader import load_documents
 from classify.classifier import classify_document
 from extract.metadata_extractor import extract_metadata
 from evaluation.evaluate import evaluate_predictions
+from evaluation.validate_metadata import validate_metadata_structure
 import json
 import os
 
@@ -24,6 +25,7 @@ def main():
         save_json(doc, OUTPUT_FOLDER)
 
     evaluate_predictions(docs)
+    validate_metadata_structure()
 
 
 if __name__ == "__main__":

@@ -18,7 +18,7 @@ contract_prompt = """
 You will receive a Contract text. Extract the following fields and return them in **JSON format**:
 - parties (array of the names involved)
 - effective_date (when the contract starts)
-- termination_date (or null if missing)
+- termination_date (or null if missing). If only a duration is mentioned (e.g. "24 months from start"), **calculate the date explicitly.**
 - key_terms (list of important clauses or conditions)
 
 If a field is missing, return it as null.
@@ -27,6 +27,7 @@ Return only a valid JSON object.
 Contract text:
 {text}
 """
+
 
 report_prompt = """
 You will receive a Report text. Extract the following fields and return them in **JSON format**:
