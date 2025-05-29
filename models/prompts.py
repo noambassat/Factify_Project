@@ -7,8 +7,10 @@ You will receive an Invoice text. Extract the following fields and return them i
 - due_date (or null if missing)
 - line_items (array of items, each with description and amount)
 
+
 If a field is missing, return it as null.
 Return only a valid JSON object.
+
 
 Invoice text:
 {text}
@@ -18,7 +20,7 @@ contract_prompt = """
 You will receive a Contract text. Extract the following fields and return them in **JSON format**:
 - parties (array of the names involved)
 - effective_date (when the contract starts)
-- termination_date (or null if missing). If only a duration is mentioned (e.g. "24 months from start"), **calculate the date explicitly.**
+- termination_date (when the contract ends). If the text describes only a duration (e.g. "24 months from the effective date"), calculate the exact termination date.
 - key_terms (list of important clauses or conditions)
 
 If a field is missing, return it as null.
@@ -29,7 +31,7 @@ Contract text:
 """
 
 
-report_prompt = """
+earnings_prompt = """
 You will receive a Report text. Extract the following fields and return them in **JSON format**:
 - reporting_period (e.g. Q1 2025, or date range)
 - key_metrics (a dictionary of important financial or operational numbers)
@@ -45,5 +47,5 @@ Report text:
 LABEL_PROMPTS = {
     "Invoice": invoice_prompt,
     "Contract": contract_prompt,
-    "Earnings": report_prompt
+    "Earnings": earnings_prompt
 }
