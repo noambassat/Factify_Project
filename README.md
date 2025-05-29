@@ -10,7 +10,7 @@ It transforms static business documents into structured, AI-ready JSON represent
 
 ```bash
 git clone https://github.com/noambassat/Factify_Project.git
-cd Factify-Assignment
+cd Factify_Project
 
 ```
 
