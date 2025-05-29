@@ -190,69 +190,69 @@ requirements.txt            # Python dependencies
 
 ---
 ## Part 3: Design Rationale and Production Considerations
+
 ### 1. Design Decisions
--Zero-shot classification using GPT-4o
-  Enables fast, low-cost, and flexible classification for three document types without fine-tuning or training.
--Prompt-based metadata extraction
-  Each document type uses a dedicated template to extract precise fields as defined in the task.
--Modular architecture
-  The codebase is clearly separated by responsibility: classification, extraction, API, and evaluation.
--Consistent and flexible schema
-  All metadata fields are present in every JSON, even if they are not applicable to the current document type — ensuring compatibility with downstream systems.
--Graceful handling of missing fields
-  Instead of failing or hallucinating, the system returns null or a well-structured fallback such as "TBD".
+
+- **Zero-shot classification using GPT-4o**  
+  Enables fast, cost-effective, and flexible document categorization for three predefined types without fine-tuning or labeled training data.
+
+- **Prompt-based metadata extraction**  
+  Each document type uses a dedicated and type-aware prompt template, ensuring accurate field extraction that aligns with business requirements.
+
+- **Modular architecture**  
+  The codebase is split by responsibility (e.g., `classify/`, `extract/`, `api/`, `utils/`), making it easy to test, debug, or extend individual components.
+
+- **Consistent and flexible schema**  
+  All documents include the full set of metadata fields in the JSON output — even if not applicable to the current document type — to provide a unified interface for downstream systems.
+
+- **Graceful handling of missing fields**  
+  Instead of hallucinating values or failing, the system returns `null` or predefined fallbacks such as `"TBD"` where relevant.
+
+---
 
 ### 2. AI-Powered Feature Suggestions
-#### - Feature 1: Smart Date-Based Reminders
-    What it does:
-    Automatically detects fields like due_date, termination_date, or reporting_period, and generates time-based reminders.
-    
-    How it works:
-    Each document generates a list of structured actions with status, priority, and optional deadlines — designed for task management tools or alerts.
-    
-    Business value:
-    Reduces risk of missed deadlines, supports operational automation, and enables intelligent monitoring of business obligations.
 
-#### - Feature 2: Intelligent Document Workflow Agent
-    What it does:
-    An AI agent operates above the API layer and receives structured metadata. It makes contextual decisions such as:
-    
-    Who should receive this document?
-    
-    Is any important field missing and needs human attention?
-    
-    Which document is most urgent?
-    
-    How it works:
-    The agent analyzes fields like type, priority, deadline, and key_terms, and routes the document or alerts relevant stakeholders in real-time.
-    
-    Business value:
-    Transforms static documents into autonomous, actionable items. Replaces manual sorting with a smart document task manager — enabling AI-powered workflows.
+#### Feature 1: Smart Date-Based Reminders
+
+- **What it does**: Automatically detects fields like `due_date`, `termination_date`, or `reporting_period`, and generates time-based reminders.
+
+- **How it works**:  
+  The system produces a list of `actions` for each document, enriched with `status`, `priority`, and optional `deadline` fields — making it compatible with business tools like task managers or alert systems.
+
+- **Business value**:  
+  Helps prevent missed deadlines, improves compliance, and supports lightweight automation of document tracking.
+
+#### Feature 2: Intelligent Document Workflow Agent
+
+- **What it does**:  
+  An AI agent (external to the current system) uses the extracted metadata to route and manage documents in real time. It can:
+  - Route documents to the correct department or user (e.g., contracts to finance, reports to executives)
+  - Identify which documents are most urgent based on `type`, `priority`, or `deadline`
+  - Flag missing critical fields and suggest human review
+
+- **How it works**:  
+  The agent interacts with the system's API, analyzes metadata like `key_terms`, `document_type`, and deadlines, and triggers automated workflows or escalations as needed.
+
+- **Business value**:  
+  This transforms static documents into active workflow items. Instead of a passive API, the organization gains a real-time, AI-enhanced decision system — a document task manager that improves response time and prioritization.
+
+---
 
 ### 3. Production Considerations
- - LLM API Failures
-  All LLM calls are wrapped in try/except.
-  In case of failure, the system returns HTTP 503 with a clear error message.
-  Errors are logged for debugging and tracing purposes.
-  
-  Suggested improvement: implement exponential backoff with jitter to handle rate limits or network spikes gracefully.
 
--Caching Strategy
-  Each document is stored by its document_id.
-  
-  Optional: generate a hash fingerprint of the PDF to detect changes and avoid redundant processing.
+- **LLM API Failures**
+  - All GPT-based operations are wrapped in `try/except` blocks
+  - If an error occurs, the system responds with HTTP `503` and an informative error message
+  - Logs are recorded for future debugging
+  - Implement exponential backoff with jitter to handle rate limits or network spikes gracefully
 
-- Cost Estimation
-  Classification (short text, ~250 tokens): ~$0.002
-  
-  Metadata extraction (~1000 tokens): ~$0.01
-  
-  Total per document: ~$0.012 using GPT-4o
-  
-  Additional costs (infrastructure, latency, cloud storage) are minimal for an MVP using FastAPI and OpenAI.
-  
+- **Caching Strategy**
+  - Each document is stored using a unique `document_id` (UUID).
+  - To avoid reprocessing, the system checks if the document already exists in the output folder.
+  - Optional: compute a hash of the raw text to detect if the PDF content has changed.
 
-
-
-
-
+- **Cost Estimation**
+  - **Classification step** (≈250 tokens): ~$0.002
+  - **Metadata extraction** (≈1000 tokens): ~$0.01
+  - **Total cost per document**: ~$0.012 using GPT-4o
+  - **Additional costs** (cloud hosting, latency, compute): minimal when using FastAPI and OpenAI in a development-stage MVP
