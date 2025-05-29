@@ -142,6 +142,7 @@ data/
 
 evaluation/
 └── evaluate.py             # Evaluation or scoring logic (optional or for future use)
+└── validate_metadata.py    # Prints null feilds
 
 extract/
 └── metadata_extractor.py   # Prompt-based metadata extraction from documents
@@ -171,7 +172,13 @@ requirements.txt            # Python dependencies
 - Confidence scores via token-level logprobs
 - Missing fields handled gracefully (`null`)
 - Output schema designed for API and AI usage
+- Simple evaluation techniques were added. 
 
+  ### Evaluation Summary
+    - Classification: Confusion matrix and F1-score measured for the 3-label classifier.
+    - Metadata Extraction: Missing fields are automatically logged per document, based on its type-specific schema.
+
+Note: For consistency, all metadata fields are included in the JSON output, even if they are irrelevant for a given document type.
 ---
 
 ## Part 2: AI-Ready API
