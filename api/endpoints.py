@@ -74,26 +74,57 @@ def get_document_actions(
     doc = load_document_by_id(document_id)
     actions = []
 
-    if doc.classification.type == "Invoice" and doc.metadata.due_date:
-        actions.append(ActionItem(
-            type="payment",
-            description="Schedule payment for invoice",
-            deadline=doc.metadata.due_date,
-            priority="high"
-        ))
+    if doc.classification.type == "Invoice":
+        if doc.metadata.due_date:
+            actions.append(ActionItem(
+                type="payment",
+                description="Schedule payment for invoice",
+                deadline=doc.metadata.due_date,
+                priority="high"
+            ))
+        else:
+            actions.append(ActionItem(
+                type="payment",
+                description="Review invoice payment date manually",
+                deadline="TBD",
+                priority="medium"
+            ))
 
-    if doc.classification.type == "Contract" and doc.metadata.termination_date:
+    elif doc.classification.type == "Contract":
+        if doc.metadata.termination_date:
+            actions.append(ActionItem(
+                type="review",
+                description="Prepare for contract termination",
+                deadline=doc.metadata.termination_date,
+                priority="medium"
+            ))
+        else:
+            actions.append(ActionItem(
+                type="review",
+                description="Check contract for termination clauses",
+                deadline="TBD",
+                priority="medium"
+            ))
+
+    elif doc.classification.type == "Earnings":
+        if doc.metadata.key_metrics:
+            actions.append(ActionItem(
+                type="report",
+                description="Review financial performance summary",
+                priority="low"
+            ))
+        else:
+            actions.append(ActionItem(
+                type="report",
+                description="Manually extract key metrics for financial analysis",
+                priority="low"
+            ))
+
+    # Fallback if no metadata-based action was added
+    if not actions:
         actions.append(ActionItem(
             type="review",
-            description="Prepare for contract termination",
-            deadline=doc.metadata.termination_date,
-            priority="medium"
-        ))
-
-    if doc.classification.type == "Earnings" and doc.metadata.key_metrics:
-        actions.append(ActionItem(
-            type="report",
-            description="Review financial performance summary",
+            description="Manual review recommended – no structured fields found",
             priority="low"
         ))
 
@@ -106,3 +137,4 @@ def get_document_actions(
         actions = [a for a in actions if a.priority == priority]
 
     return ActionList(document_id=document_id, actions=actions)
+
