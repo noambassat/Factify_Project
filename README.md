@@ -1,8 +1,7 @@
-
 # Factify Document Intelligence System
 
 This project is a solution for the GenAI Engineer Candidate Task from Factify.  
-It processes business documents (invoices, contracts, and earnings reports), classifies them using LLMs, and extracts structured metadata into a well-defined, API-ready format.
+It transforms static business documents into structured, AI-ready JSON representations, enabling seamless integration with downstream APIs and intelligent workflows.
 
 ---
 
@@ -11,7 +10,7 @@ It processes business documents (invoices, contracts, and earnings reports), cla
 ### 1. Install Dependencies
 
 Make sure you have **Python 3.10+** installed.  
-It is recommended to use a virtual environment.
+It's recommended to use a virtual environment.
 
 ```bash
 pip install -r requirements.txt
@@ -21,33 +20,33 @@ pip install -r requirements.txt
 
 You can either:
 
-- Add a `.env` file with the following line:
+- Add a `.env` file:
 
-```
+```env
 OPENAI_API_KEY=your_key_here
 ```
 
 - Or set an environment variable manually:
 
-**Windows CMD:**
+**Windows CMD**
 ```cmd
 set OPENAI_API_KEY=your_key_here
 ```
 
-**Mac/Linux:**
+**Mac/Linux**
 ```bash
 export OPENAI_API_KEY=your_key_here
 ```
 
-### 3. Place Your Input PDF Documents
+### 3. Place Your Input PDFs
 
-Save your PDF files under:
+Put your files into the following directory:
 
 ```
 data/input_pdfs/
 ```
 
-### 4. Run the Processing Pipeline
+### 4. Run Document Processing Pipeline
 
 ```bash
 python main.py
@@ -55,16 +54,16 @@ python main.py
 
 This will:
 
-- Extract the text
-- Classify the document type
-- Extract semantic metadata
+- Load and parse PDFs
+- Classify document types using GPT-4o
+- Extract structured metadata
 - Save results to:
 
 ```
 results/output_json/
 ```
 
-### 5. Start the Mock API Server
+### 5. Launch the API Server
 
 ```bash
 uvicorn api.api_main:app --reload
@@ -72,52 +71,55 @@ uvicorn api.api_main:app --reload
 
 ---
 
-## API Endpoints (Part 2)
+## API Overview (Part 2)
 
 ### `POST /documents/analyze`
 
-- Accepts the filename of a previously processed document.
+- Input: `filename` (string query param)
 - Returns:
-  - Full metadata
-  - Classification type and confidence
+  - Document ID
+  - Classification type & confidence
   - Raw text
+  - Extracted metadata
+
+---
 
 ### `GET /documents/{id}`
 
-- Returns all structured information for the given document ID.
-- Designed to be easily consumable by AI agents.
+- Returns the full structured representation of a document (by UUID)
+- Designed to be machine-consumable
+- All fields follow a consistent, semantic schema
+
+---
 
 ### `GET /documents/{id}/actions`
 
-- Returns a list of suggested actions based on the document type and metadata.
-- Supports optional filtering by:
+- Returns a list of suggested actions based on document type and content
+- Filters:
   - `status`
   - `deadline`
   - `priority`
 
 ---
 
-## Output JSON Format
+## Example Output
 
-Each processed document is saved in `results/output_json/` with the following structure:
+Each output is saved as a `.json` file under `results/output_json/` with the following structure:
 
 ```json
 {
-  "document_id": "generated_uuid",
-  "filename": "invoice1.pdf",
+  "document_id": "uuid",
+  "filename": "contract.PDF",
   "raw_text": "...",
   "classification": {
-    "type": "Invoice",
-    "confidence": 0.97
+    "type": "Contract",
+    "confidence": 0.998
   },
   "metadata": {
-    "vendor": "Example LLC",
-    "amount": "$1299.00",
-    "due_date": "2024-03-25",
-    "line_items": [
-      { "description": "Consulting Services", "amount": "$1000.00" },
-      { "description": "VAT", "amount": "$299.00" }
-    ]
+    "parties": [...],
+    "effective_date": "...",
+    "termination_date": "...",
+    "key_terms": [...]
   }
 }
 ```
@@ -157,65 +159,76 @@ utils/
 main.py                     # Main processing script
 README.md                   # Project documentation
 requirements.txt            # Python dependencies
+
 ```
 
 ---
 
-## Part 1 -Summary
+## Part 1: LLM-Based Document Intelligence
 
-- **Zero-shot classification** using GPT-4o  
-- **Prompt-based structured extraction** per document type  
-- Supports 3 types: `Invoice`, `Contract`, `Earnings`  
-- Handles missing fields gracefully (returns `null`)  
-- Saves structured outputs consumable by AI systems  
-
----
-
-## Part 2 -REST API Summary
-
-- Exposes classification & metadata via clean API  
-- Includes semantic actions per document type  
-- Designed for composability: descriptive fields & consistent format  
-- Supports filtering for downstream consumption  
+- Uses **GPT-4o** with zero-shot prompts for classification
+- Prompt-based extraction tailored to each document type
+- Confidence scores via token-level logprobs
+- Missing fields handled gracefully (`null`)
+- Output schema designed for API and AI usage
 
 ---
 
-## Part 3 -Talking Points
+## Part 2: AI-Ready API
+
+- FastAPI-based mock server with 3 clean endpoints
+- Each response includes field-level structure, type safety, and fallback handling
+- Swagger UI available at `/docs`
+- Consistent schemas with Pydantic models
+
+---
+
+## Part 3: Talking Points
 
 ### 1. Design Decisions
 
-- **Zero-shot Classification**: Chosen for simplicity and speed. With only 3 document types, it performs well.
-- **Prompt-based Extraction**: Specific prompts per document type to extract fields into structured JSON.
-- **Modular Design**: Components are cleanly separated for clarity and testability.
-- **Graceful Fallbacks**: Missing metadata returns `null` instead of breaking.
+- **Zero-shot classification** chosen for flexibility and minimal training
+- **Prompt templates** tuned per document type
+- **Dataclass-based abstraction** keeps documents modular
+- **FastAPI** selected for clarity, speed, and OpenAPI documentation
 
-### 2. AI-Powered Features for Factify
+### 2. AI-Powered Feature Suggestions
 
-#### Feature 1: Document Timeline Alerts
+#### Feature 1 - Smart Due-Date Reminders
 
-- **Use case**: Trigger reminders from fields like `due_date` or `termination_date`.
-- **Implementation**: API returns suggested actions with time-sensitive recommendations.
-- **Value**: Proactively supports business deadlines and compliance.
+- Leverage `due_date`, `termination_date`, and `reporting_period`
+- Return actionable reminders and alerts
+- Adds business value by reducing missed deadlines
 
-#### Feature 2: Semantic Document Comparison
+#### Feature 2 - Auto-Enrichment Suggestions
 
-- **Use case**: Compare two versions of a contract or report.
-- **Implementation**: Embed both versions and highlight semantic differences.
-- **Value**: Enables smart, AI-powered review workflows for legal/HR/finance.
+- Suggest missing fields (e.g. missing totals or terms)
+- Use LLMs to infer or recommend what may be added to make the doc more complete
 
 ### 3. Production Considerations
 
 - **LLM API Failures**:
-  - Handled with `try/except`
-  - Fallback to cached results if available
-  - Return HTTP 503 with descriptive message if necessary
+  - Wrapped in `try/except`
+  - Returns HTTP 503 on failure with message
+  - Logs error context for debugging
 
-- **Caching Strategy**:
-  - Save processed documents by UUID and filename
-  - Reuse on repeated analysis to save cost
+- **Caching**:
+  - Processed results saved by `document_id`
+  - Reuse outputs to reduce LLM calls
 
-- **Cost Estimation**:
-  - ~2 GPT-4o calls per document (~500 tokens per call)
-  - Estimated cost: ~$0.01 per document
+- **Cost**:
+  - ~2 OpenAI calls per document (~500-1000 tokens total)
+  - ~$0.01 per doc (based on GPT-4o pricing)
+
+---
+
+## Final QA Checks
+
+- [x] Swagger UI and OpenAPI schema autogenerated
+- [x] Semantic field names in all responses
+- [x] Fallbacks for missing fields
+- [x] Example JSON output included
+- [x] Filtering works on `/actions` endpoint
+- [x] Raw text exposed for downstream LLM agents
 
 ---
