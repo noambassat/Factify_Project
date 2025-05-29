@@ -210,7 +210,7 @@ requirements.txt            # Python dependencies
   The codebase is split by responsibility (e.g., `classify/`, `extract/`, `api/`, `utils/`), making it easy to test, debug, or extend individual components.
 
 - **Consistent and flexible schema**  
-  All documents include the full set of metadata fields in the JSON output — even if not applicable to the current document type — to provide a unified interface for downstream systems.
+  All documents include the full set of metadata fields in the JSON output - even if not applicable to the current document type - to provide a unified interface for downstream systems.
 
 - **Graceful handling of missing fields**  
   Instead of hallucinating values or failing, the system returns `null` or predefined fallbacks such as `"TBD"` where relevant.
@@ -231,14 +231,14 @@ requirements.txt            # Python dependencies
   Actions would include real-time countdowns, status updates, and notifications as deadlines approach.
 
 - **Why it's new**:  
-  While the current API generates static action items, this feature transforms them into **live alerts** — pushing reminders to users instead of waiting for them to pull data.
+  While the current API generates static action items, this feature transforms them into **live alerts** - pushing reminders to users instead of waiting for them to pull data.
 
 - **Business value**:  
   Helps prevent missed payments, contract expirations, or reporting delays.  
   Enables better document tracking, especially in deadline-driven workflows like finance, HR, and legal.
 
 
-#### Feature 2 — Intelligent Document Workflow Agent
+#### Feature 2 - Intelligent Document Workflow Agent
 
 - **What it does:**  
   An external AI agent leverages the metadata extracted from documents to intelligently route, prioritize, and manage document-based tasks in real time. For example, it can:
