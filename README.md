@@ -171,6 +171,9 @@ requirements.txt            # Python dependencies
 - Confidence scores via token-level logprobs
 - Missing fields handled gracefully (`null`)
 - Output schema designed for API and AI usage
+- Simple evaluation techniques were added. 
+
+Note: For consistency, all metadata fields are present in the JSON output, even if they are irrelevant for this particular doc type.
 
 ---
 
