@@ -6,7 +6,7 @@ It processes business documents (invoices, contracts, and earnings reports), cla
 
 ---
 
-## 🛠️ How to Run
+## How to Run
 
 ### 1. Install Dependencies
 
@@ -72,7 +72,7 @@ uvicorn api.api_main:app --reload
 
 ---
 
-## 🔗 API Endpoints (Part 2)
+## API Endpoints (Part 2)
 
 ### `POST /documents/analyze`
 
@@ -97,7 +97,7 @@ uvicorn api.api_main:app --reload
 
 ---
 
-## 📄 Output JSON Format
+## Output JSON Format
 
 Each processed document is saved in `results/output_json/` with the following structure:
 
@@ -124,7 +124,7 @@ Each processed document is saved in `results/output_json/` with the following st
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 main.py                       # Entry point for processing documents
@@ -149,7 +149,7 @@ results/output_json/          # Output folder for JSON results
 
 ---
 
-## 🧠 Part 1 — Summary
+## Part 1 -Summary
 
 - **Zero-shot classification** using GPT-4o  
 - **Prompt-based structured extraction** per document type  
@@ -159,7 +159,7 @@ results/output_json/          # Output folder for JSON results
 
 ---
 
-## 🌐 Part 2 — REST API Summary
+## Part 2 -REST API Summary
 
 - Exposes classification & metadata via clean API  
 - Includes semantic actions per document type  
@@ -168,7 +168,7 @@ results/output_json/          # Output folder for JSON results
 
 ---
 
-## 💬 Part 3 — Talking Points
+## Part 3 -Talking Points
 
 ### 1. Design Decisions
 
