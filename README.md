@@ -6,6 +6,13 @@ It transforms static business documents into structured, AI-ready JSON represent
 ---
 
 ## How to Run
+### 0. Clone the Repository
+
+```bash
+git clone https://github.com/noambassat/Factify_Project.git
+cd Factify-Assignment
+
+```
 
 ### 1. Install Dependencies
 
@@ -214,27 +221,51 @@ requirements.txt            # Python dependencies
 
 #### Feature 1: Smart Date-Based Reminders
 
-- **What it does**: Automatically detects fields like `due_date`, `termination_date`, or `reporting_period`, and generates time-based reminders.
-
-- **How it works**:  
-  The system produces a list of `actions` for each document, enriched with `status`, `priority`, and optional `deadline` fields — making it compatible with business tools like task managers or alert systems.
-
-- **Business value**:  
-  Helps prevent missed deadlines, improves compliance, and supports lightweight automation of document tracking.
-
-#### Feature 2: Intelligent Document Workflow Agent
-
 - **What it does**:  
-  An AI agent (external to the current system) uses the extracted metadata to route and manage documents in real time. It can:
-  - Route documents to the correct department or user (e.g., contracts to finance, reports to executives)
-  - Identify which documents are most urgent based on `type`, `priority`, or `deadline`
-  - Flag missing critical fields and suggest human review
+  Enhances the system's existing `actions` capability by connecting it to actual time-based alerts.  
+  Based on fields like `due_date`, `termination_date`, and `reporting_period`, it would proactively notify users before important deadlines.
 
 - **How it works**:  
-  The agent interacts with the system's API, analyzes metadata like `key_terms`, `document_type`, and deadlines, and triggers automated workflows or escalations as needed.
+  The system already generates semantic `actions` from extracted metadata.  
+  This feature proposes an extension that integrates those actions with task management tools (like Google Calendar or Slack reminders).  
+  Actions would include real-time countdowns, status updates, and notifications as deadlines approach.
+
+- **Why it's new**:  
+  While the current API generates static action items, this feature transforms them into **live alerts** — pushing reminders to users instead of waiting for them to pull data.
 
 - **Business value**:  
-  This transforms static documents into active workflow items. Instead of a passive API, the organization gains a real-time, AI-enhanced decision system — a document task manager that improves response time and prioritization.
+  Helps prevent missed payments, contract expirations, or reporting delays.  
+  Enables better document tracking, especially in deadline-driven workflows like finance, HR, and legal.
+
+
+#### Feature 2 — Intelligent Document Workflow Agent
+
+- **What it does:**  
+  An external AI agent leverages the metadata extracted from documents to intelligently route, prioritize, and manage document-based tasks in real time. For example, it can:
+  - Automatically route contracts to the legal or finance team
+  - Forward reports to executives or the strategy department
+  - Prioritize documents with imminent `due_date` or `termination_date`
+  - Flag incomplete metadata (e.g., missing `amount` or `executive_summary`) for human validation
+
+- **How it works (technical approach):**  
+  The system exposes clean and structured data via the `GET /documents/{id}` and `GET /documents/{id}/actions` endpoints.  
+  A separate automation layer (e.g., a webhook-based microservice or LLM agent) consumes these APIs periodically or upon new document ingestion, and:
+  - Parses classification (`type`), actions, and metadata
+  - Applies routing rules (e.g., "If type = 'Invoice' and due_date < 7 days → notify Finance")
+  - Pushes alerts or workflow items to external tools like Slack, Trello, or Microsoft Teams
+  - Logs any inconsistencies or missing fields to an audit or escalation dashboard
+
+- **Who it serves:**  
+  - **Legal/Finance departments** benefit from automatic routing and validation  
+  - **Executives** receive only filtered summaries of strategic documents  
+  - **Ops/Product teams** avoid bottlenecks by surfacing urgent items before deadlines
+
+- **Business value:**  
+  This shifts the system from *static API delivery* to an *active decision-support layer*.  
+  By embedding metadata into real-time workflows, organizations can:
+  - Reduce response time to critical documents
+  - Ensure SLA compliance (e.g., payment deadlines, contract renewals)
+  - Improve document visibility and auditability without manual triage
 
 ---
 
