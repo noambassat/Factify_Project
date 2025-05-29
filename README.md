@@ -1,96 +1,209 @@
+
 # Factify Document Intelligence System
 
 This project is a solution for the GenAI Engineer Candidate Task from Factify.  
-It processes business documents (invoices, contracts, and earnings reports), classifies them using LLMs, and extracts structured metadata.
+It processes business documents (invoices, contracts, and earnings reports), classifies them using LLMs, and extracts structured metadata into a well-defined, API-ready format.
 
-## How to Run
+---
 
-1. Install dependencies  
-   Make sure you have Python 3.10+ installed.  
-   It is recommended to use a virtual environment.
+## 🛠️ How to Run
 
-   pip install -r requirements.txt
+### 1. Install Dependencies
 
-2. Set your OpenAI API key  
-   You can either:
-   - Add a .env file with the line:
-     OPENAI_API_KEY=your_key_here
-   - Or set an environment variable:
+Make sure you have **Python 3.10+** installed.  
+It is recommended to use a virtual environment.
 
-     For Windows CMD:
-     set OPENAI_API_KEY=your_key_here
+```bash
+pip install -r requirements.txt
+```
 
-     For Mac/Linux:
-     export OPENAI_API_KEY=your_key_here
-3. Place your input PDF documents in:
+### 2. Set Your OpenAI API Key
 
-   data/input_pdfs/
+You can either:
 
-4. Run the pipeline:
+- Add a `.env` file with the following line:
 
-   python main.py
+```
+OPENAI_API_KEY=your_key_here
+```
 
-5. Results  
-   Output files will be saved in:
+- Or set an environment variable manually:
 
-   results/output_json/
+**Windows CMD:**
+```cmd
+set OPENAI_API_KEY=your_key_here
+```
 
-## Classification and Metadata Extraction
+**Mac/Linux:**
+```bash
+export OPENAI_API_KEY=your_key_here
+```
 
-- Zero-shot classification using OpenAI's GPT-4o
-- Supported types: Invoice, Contract, Earnings
-- Confidence scores are included
-- Structured metadata is extracted based on document type
-- Robust handling of missing or partial fields
+### 3. Place Your Input PDF Documents
 
-## Output JSON Format
+Save your PDF files under:
 
-Each processed document is saved as a JSON with the following structure:
+```
+data/input_pdfs/
+```
 
+### 4. Run the Processing Pipeline
+
+```bash
+python main.py
+```
+
+This will:
+
+- Extract the text
+- Classify the document type
+- Extract semantic metadata
+- Save results to:
+
+```
+results/output_json/
+```
+
+### 5. Start the Mock API Server
+
+```bash
+uvicorn api.api_main:app --reload
+```
+
+---
+
+## 🔗 API Endpoints (Part 2)
+
+### `POST /documents/analyze`
+
+- Accepts the filename of a previously processed document.
+- Returns:
+  - Full metadata
+  - Classification type and confidence
+  - Raw text
+
+### `GET /documents/{id}`
+
+- Returns all structured information for the given document ID.
+- Designed to be easily consumable by AI agents.
+
+### `GET /documents/{id}/actions`
+
+- Returns a list of suggested actions based on the document type and metadata.
+- Supports optional filtering by:
+  - `status`
+  - `deadline`
+  - `priority`
+
+---
+
+## 📄 Output JSON Format
+
+Each processed document is saved in `results/output_json/` with the following structure:
+
+```json
 {
   "document_id": "generated_uuid",
   "filename": "invoice1.pdf",
-  "true_label": "Invoice",
-  "predicted_label": "Invoice",
-  "label_confidence": {
-    "Invoice": 0.98
+  "raw_text": "...",
+  "classification": {
+    "type": "Invoice",
+    "confidence": 0.97
   },
   "metadata": {
     "vendor": "Example LLC",
     "amount": "$1299.00",
     "due_date": "2024-03-25",
     "line_items": [
-      {
-        "description": "Consulting Services",
-        "amount": "$1000.00"
-      },
-      {
-        "description": "VAT",
-        "amount": "$299.00"
-      }
+      { "description": "Consulting Services", "amount": "$1000.00" },
+      { "description": "VAT", "amount": "$299.00" }
     ]
   }
 }
+```
 
-## Project Structure
+---
 
-- main.py — Entry point for document processing
-- config.py — Configuration constants and folder paths
-- models/openai_client.py — OpenAI client setup
-- models/prompts.py — Prompt templates for each document type
-- classify/classifier.py — LLM-based document classification
-- extract/metadata_extractor.py — Metadata extraction based on predicted type
-- utils/pdf_loader.py — PDF parsing and raw text extraction
-- results/output_json/ — Output folder for generated JSONs
+## 📁 Project Structure
 
-## Part 1 — Completed
+```
+main.py                       # Entry point for processing documents
+config.py                     # Paths and environment configuration
 
-- LLM classification of document types
-- Prompt-based structured metadata extraction
-- Output includes confidence levels
-- Graceful degradation for missing fields
-- Works on unseen documents in production structure
+models/
+│   └── openai_client.py      # OpenAI API client wrapper
+│   └── prompts.py            # Prompt templates for metadata extraction
 
-## Part 2 and 3
+classify/classifier.py        # LLM-based document type classification
+extract/metadata_extractor.py # Prompt-based metadata extraction
 
-A REST-style mock API and written design document are provided separately in api_docs.md.
+utils/
+│   └── pdf_loader.py         # PDF parsing utilities
+│   └── document_types.py     # Document object structure
+
+api/                          # FastAPI endpoints and schema
+
+data/input_pdfs/              # Place PDF files here
+results/output_json/          # Output folder for JSON results
+```
+
+---
+
+## 🧠 Part 1 — Summary
+
+- **Zero-shot classification** using GPT-4o  
+- **Prompt-based structured extraction** per document type  
+- Supports 3 types: `Invoice`, `Contract`, `Earnings`  
+- Handles missing fields gracefully (returns `null`)  
+- Saves structured outputs consumable by AI systems  
+
+---
+
+## 🌐 Part 2 — REST API Summary
+
+- Exposes classification & metadata via clean API  
+- Includes semantic actions per document type  
+- Designed for composability: descriptive fields & consistent format  
+- Supports filtering for downstream consumption  
+
+---
+
+## 💬 Part 3 — Talking Points
+
+### 1. Design Decisions
+
+- **Zero-shot Classification**: Chosen for simplicity and speed. With only 3 document types, it performs well.
+- **Prompt-based Extraction**: Specific prompts per document type to extract fields into structured JSON.
+- **Modular Design**: Components are cleanly separated for clarity and testability.
+- **Graceful Fallbacks**: Missing metadata returns `null` instead of breaking.
+
+### 2. AI-Powered Features for Factify
+
+#### Feature 1: Document Timeline Alerts
+
+- **Use case**: Trigger reminders from fields like `due_date` or `termination_date`.
+- **Implementation**: API returns suggested actions with time-sensitive recommendations.
+- **Value**: Proactively supports business deadlines and compliance.
+
+#### Feature 2: Semantic Document Comparison
+
+- **Use case**: Compare two versions of a contract or report.
+- **Implementation**: Embed both versions and highlight semantic differences.
+- **Value**: Enables smart, AI-powered review workflows for legal/HR/finance.
+
+### 3. Production Considerations
+
+- **LLM API Failures**:
+  - Handled with `try/except`
+  - Fallback to cached results if available
+  - Return HTTP 503 with descriptive message if necessary
+
+- **Caching Strategy**:
+  - Save processed documents by UUID and filename
+  - Reuse on repeated analysis to save cost
+
+- **Cost Estimation**:
+  - ~2 GPT-4o calls per document (~500 tokens per call)
+  - Estimated cost: ~$0.01 per document
+
+---
