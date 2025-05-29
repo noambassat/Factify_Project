@@ -4,6 +4,7 @@ from utils.pdf_loader import load_documents
 from classify.classifier import classify_document
 from extract.metadata_extractor import extract_metadata
 from evaluation.evaluate import evaluate_predictions
+import json
 import os
 
 def save_json(doc, output_dir):
@@ -13,7 +14,7 @@ def save_json(doc, output_dir):
     path = os.path.join(output_dir, json_filename)
 
     with open(path, "w", encoding="utf-8") as f:
-        f.write(doc.to_json())
+        f.write(json.dumps(doc.to_api_dict(), indent=2, ensure_ascii=False))
 
 def main():
     docs = load_documents(PDF_INPUT_FOLDER)

@@ -6,7 +6,7 @@ import json
 
 @dataclass
 class Document:
-    id: str = field(default_factory=lambda: str(uuid.uuid4()))
+    document_id: str = field(default_factory=lambda: str(uuid.uuid4()))
     filename: str = ""
     raw_text: str = ""
     chunks: List[str] = field(default_factory=list)
@@ -17,3 +17,15 @@ class Document:
 
     def to_json(self):
         return json.dumps(self.__dict__, indent=2, ensure_ascii=False)
+
+    def to_api_dict(self):
+        return {
+            "document_id": self.document_id,
+            "filename": self.filename,
+            "raw_text": self.raw_text,
+            "classification": {
+                "type": self.predicted_label,
+                "confidence": self.label_confidence.get(self.predicted_label, 0.0)
+            },
+            "metadata": self.metadata
+        }
