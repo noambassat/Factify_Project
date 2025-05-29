@@ -127,24 +127,36 @@ Each processed document is saved in `results/output_json/` with the following st
 ## Project Structure
 
 ```
-main.py                       # Entry point for processing documents
-config.py                     # Paths and environment configuration
+api/
+├── api_main.py             # Entry point for API server (FastAPI)
+├── endpoints.py            # API endpoint logic
+└── schema.py               # Pydantic models and request/response schemas
+
+classify/
+└── classifier.py           # LLM-based document type classification
+
+data/
+└── input_pdfs/             # Folder to store input PDF files
+
+evaluation/
+└── evaluate.py             # Evaluation or scoring logic (optional or for future use)
+
+extract/
+└── metadata_extractor.py   # Prompt-based metadata extraction from documents
 
 models/
-│   └── openai_client.py      # OpenAI API client wrapper
-│   └── prompts.py            # Prompt templates for metadata extraction
+├── openai_client.py        # Wrapper for OpenAI API calls
+└── prompts.py              # Prompt templates used in extraction/classification
 
-classify/classifier.py        # LLM-based document type classification
-extract/metadata_extractor.py # Prompt-based metadata extraction
+results/
+└── output_json/            # Folder for storing final structured JSON outputs
 
 utils/
-│   └── pdf_loader.py         # PDF parsing utilities
-│   └── document_types.py     # Document object structure
+└── config.py               # Configuration and path management
 
-api/                          # FastAPI endpoints and schema
-
-data/input_pdfs/              # Place PDF files here
-results/output_json/          # Output folder for JSON results
+main.py                     # Main processing script
+README.md                   # Project documentation
+requirements.txt            # Python dependencies
 ```
 
 ---
