@@ -177,15 +177,31 @@ requirements.txt            # Python dependencies
 - Uses **GPT-4o** with zero-shot prompts for classification
 - Prompt-based extraction tailored to each document type
 - Confidence scores via token-level logprobs
+    **Note on Classification Context**  
+      For initial classification, the system analyzes only the first 250 tokens of the document text.  
+      This was sufficient for the sample documents (which had clear headers), but in production, it may be recommended to expand the context window — such as by analyzing       the first full page or performing multi-pass classification — to handle documents with varied structure.
+
+
 - Missing fields handled gracefully (`null`)
 - Output schema designed for API and AI usage
+
 - Simple evaluation techniques were added. 
 
   ### Evaluation Summary
     - Classification: Confusion matrix and F1-score measured for the 3-label classifier.
+        **Note on Label Source**  
+            For simplicity during evaluation, the `true_label` for each document was inferred from the original file name (e.g., "invoice2.pdf" → label "Invoice").  
+            This method was sufficient for the assignment but would not generalize in production.  
+            In a real-world setting, ground-truth labels should be assigned manually or maintained in a reliable annotation source.
+
     - Metadata Extraction: Missing fields are automatically logged per document, based on its type-specific schema.
 
-        Note: For consistency, all metadata fields are included in the JSON output, even if they are irrelevant for a given document type.
+        Note: 
+          **Schema Consistency vs. Precision**  
+            For simplicity, all metadata fields are included in every document's JSON output — even if some fields are irrelevant to the document type (e.g., key_metrics in             a Contract).  
+            This makes the schema predictable for consumers, but may introduces many null values.  
+            In production, one might switch to dynamic schemas per document type or filter out null fields before serving responses.  
+
 ---
 
 ## Part 2: AI-Ready API
